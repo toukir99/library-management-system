@@ -1,17 +1,18 @@
-import databaseConnection from './config/config';
-import dotenv from 'dotenv';
-import express from "express";
 import http from 'http';
+import app from './app';
+import dotenv from 'dotenv';
 
+// Load environment variables from .env file
 dotenv.config();
 
-const app = express();
-databaseConnection();
-
+// Create an HTTP server 
 const server = http.createServer(app);
-const port= process.env.SERVER_PORT || 3001;
 
-server.listen(port, ()=> {
+// Define the port
+const port = process.env.SERVER_PORT || 3001;
+
+// Start the server and listen on the specified port
+server.listen(port, () => {
     console.log(`Server is running on port: ${port}`);
-})
+});
 
