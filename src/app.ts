@@ -1,7 +1,11 @@
-
-import express, {Express, Request, Response, NextFunction} from "express";
+import express, { Express, Request, Response, NextFunction } from "express";
+import dotenv from "dotenv";
 import databaseConnection from './config/config';
 import authRoutes from './routes/authRoutes/authRoutes';
+
+// Load environment variables from .env file
+dotenv.config();
+
 
 // Initialize Express application
 const app : Express = express();
@@ -10,11 +14,8 @@ app.use(express.json());
 // Database connection 
 databaseConnection();
 
-
-//app.use('/auth', authRoutes);
-app.get('/', (req: Request, res: Response) => {
-    res.send('Hello, It is a new Project!');
-  });
+// Routes
+app.use('/auth', authRoutes);
 
 // Default error handler
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
