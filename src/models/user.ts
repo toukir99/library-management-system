@@ -1,5 +1,5 @@
 import { Schema, model, Document } from 'mongoose'
-import { v4 as uuidv4 } from 'uuid'
+
 // Interface for User Document
 interface IUser extends Document {
     name: string,
@@ -8,6 +8,7 @@ interface IUser extends Document {
     contact: string,
     email: string,
     password: string,
+    role: string,
     auth_token: string;
 }
 
@@ -19,9 +20,9 @@ const userSchema : Schema<IUser> = new Schema({
     contact: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
+    role: { type: String, required: true },
     auth_token: {
         type: String,
-        default: uuidv4,
       },
     }, { timestamps: true });
 

@@ -3,10 +3,6 @@ import dotenv from "dotenv";
 import databaseConnection from './config/config';
 import authRoutes from './routes/authRoutes/authRoutes';
 
-// Load environment variables from .env file
-dotenv.config();
-
-
 // Initialize Express application
 const app : Express = express();
 app.use(express.json());
