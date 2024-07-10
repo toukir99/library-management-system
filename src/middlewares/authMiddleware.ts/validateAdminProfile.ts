@@ -5,7 +5,7 @@ import adminProfileCreateSchema from '../../schemaValidate/validateAdminProfileS
 const validateAdminProfile = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
         const profileData = req.body;
-
+        console.log(profileData);
         const { value, error } = adminProfileCreateSchema.validate(profileData);
         if (error) {
             throw new Error(`Profile Validation Error: ${error.message}`);

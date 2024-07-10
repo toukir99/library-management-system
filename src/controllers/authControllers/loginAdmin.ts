@@ -18,30 +18,32 @@ const generateAuthToken = (email : string, role : string): string => {
 }
 
 // login Admin
-const loginAdmin = async (req: Request, res: Response): Promise<Response> => {
+const loginAdmin = async (req: Request, res: Response): Promise<void> => {
     try {
         const { email, password, role } = req.body;
 
         // Validate request data
         if (!email || !password) {
-            return res.status(400).json({ error: 'Email and password both are required!' });
+            res.status(400).json({ error: 'Email and password both are required!' });
         }
 
         // check if admin not found
         const authAdmin = await AdminModel.findOne({ email });
+        console.log(authAdmin);
         if (!authAdmin) {
-            return res.status(400).json({ error: 'Admin not found!' });
+            res.status(400).json({ error: 'Admin not found!' });
+            return;
         }
 
         // hash the password
         const isValidPassword = authAdmin.password === hashedPassword(password);
         if(!isValidPassword) {
-            return res.status(400).json({ error: 'Incorrect Password!'});
+            res.status(400).json({ error: 'Incorrect Password!'});
         }
 
         const isValidRole = authAdmin.role === role;
         if(!isValidRole){
-            return res.status(400).json({ error: 'Invalid Role!'});
+            res.status(400).json({ error: 'Invalid Role!'});
         }
 
         // Generate and update auth_token
@@ -50,11 +52,21 @@ const loginAdmin = async (req: Request, res: Response): Promise<Response> => {
         await authAdmin.save();
 
         // Success
-        return res.status(201).json({ message: 'You are logged in as an admin!', data: { adminId: authAdmin._id, auth_token: authAdmin.auth_token } });
+        res.status(201).json({ message: 'You are logged in as an admin!', data: { adminId: authAdmin._id, auth_token: authAdmin.auth_token } });
         
     } catch (err) {
-        return res.status(500).json({ message: 'Internal Server Error!' });
+        res.status(500).json({ message: 'Internal Server Error!' });
     }
 }
 
-export default loginAdmin;
+// Login Admin Page
+const loginAdminPage = async (req: Request, res: Response): Promise<void> => {
+    try {
+        res.render('admin/login');
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Internal Server Error!' });
+    }
+}
+
+export { loginAdmin, loginAdminPage };

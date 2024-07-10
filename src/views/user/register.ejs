@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Registration</title>
+    <link rel="stylesheet" href="../../public/css/style.css">
+</head>
+<body>
+    <h1>User Registration</h1>
+    <form action="/auth/user/register" method="POST" enctype="application/x-www-form-urlencoded">
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="studentId">StudentId</label>
+        <input type="studentId" id="studentId" name="studentId" required>
+
+        <label for="department">Department</label>
+        <input type="department" id="department" name="department" required>
+
+        <label for="contact">Contact</label>
+        <input type="text" id="contact" name="contact" required>
+
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required>
+        
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required>
+        
+        <label for="role">Role</label>
+        <select id="role" name="role">
+            <option value="user">User</option>
+        </select>
+        
+        <button type="submit">Register</button>
+    </form>
+    <p>Already have an account? <a href="/auth/user/login">Login</a></p>
+</body>
+</html>

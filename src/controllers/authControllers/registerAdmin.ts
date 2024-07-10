@@ -18,14 +18,14 @@ const generateAuthToken = (email:string, role:string): string => {
 }
 
 // Register Admin
-const registerAdmin = async (req: Request, res: Response): Promise<Response> => {
+const registerAdmin = async (req: Request, res: Response): Promise<void> => {
     try {
         const { name, email, password, contact, role } = req.body;
-
+        console.log(req.body);
         // check if admin already exists
         const existingAdmin = await AdminModel.findOne({ email });
         if (existingAdmin) {
-            return res.status(400).json({ error: 'Admin already exists!' });
+            res.status(400).json({ error: 'Admin already exists!' });
         }
 
         // hash the password
@@ -41,11 +41,22 @@ const registerAdmin = async (req: Request, res: Response): Promise<Response> => 
         }
 
         // Success
-        return res.status(201).json({ message: 'You have successfully registered as an admin!', data: { adminId: adminRecord._id } });
+        //return res.status(201).json({ message: 'You have successfully registered as an admin!', data: { adminId: adminRecord._id } });
+        res.render('admin/login');
         
     } catch (err) {
-        return res.status(500).json({ message: 'Internal Server Error!' });
+        res.status(500).json({ message: 'Internal Server Error!' });
     }
 }
 
-export default registerAdmin;
+// Register Admin Page
+const registerAdminPage = async (req: Request, res: Response): Promise<void> => {
+    try {
+        res.render('admin/register');
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Internal Server Error!' });
+    }
+}
+
+export {registerAdmin, registerAdminPage} ;

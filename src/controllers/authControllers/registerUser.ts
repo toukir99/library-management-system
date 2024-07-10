@@ -18,14 +18,14 @@ const generateAuthToken = (email:string, role:string): string => {
 }
 
 // Register user
-const registerUser = async (req: Request, res: Response): Promise<Response> => {
+const registerUser = async (req: Request, res: Response): Promise<void> => {
     try {
         const { name, studentId, department, email, password, contact, role } = req.body;
 
         // check if user already exists
         const existingUser = await UserModel.findOne({ email }) || await UserModel.findOne({ studentId });
         if (existingUser) {
-            return res.status(400).json({ error: 'User already exists!' });
+            res.status(400).json({ error: 'User already exists!' });
         }
 
         // hash the password
@@ -41,11 +41,22 @@ const registerUser = async (req: Request, res: Response): Promise<Response> => {
         }
 
         // Success
-        return res.status(201).json({ message: 'User Registration done!', data: { userId: userRecord.studentId } });
-        
+        //return res.status(201).json({ message: 'User Registration done!', data: { userId: userRecord.studentId } });
+        res.render('user/login');
     } catch (err) {
-        return res.status(500).json({ message: 'Internal Server Error!' });
+        res.status(500).json({ message: 'Internal Server Error!' });
     }
 }
 
-export default registerUser;
+// Register User Page
+const registerUserPage = async (req: Request, res: Response): Promise<void> => {
+    try {
+        res.render('user/register');
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Internal Server Error!' });
+    }
+}
+
+
+export { registerUser, registerUserPage };

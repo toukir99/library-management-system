@@ -18,30 +18,31 @@ const generateAuthToken = (email:string, role: string, studentId: number): strin
 }
 
 // login user
-const loginUser = async (req: Request, res: Response): Promise<Response> => {
+const loginUser = async (req: Request, res: Response): Promise<void> => {
     try {
         const { email, password, role } = req.body;
 
         // Validate request data
         if (!email || !password) {
-            return res.status(400).json({ error: 'Email and password both are required!' });
+            res.status(400).json({ error: 'Email and password both are required!' });
         }
 
         // check if user not found
         const authUser = await UserModel.findOne({ email });
         if (!authUser) {
-            return res.status(400).json({ error: 'User not found!' });
+            res.status(400).json({ error: 'User not found!' });
+            return;
         }
 
         // hash the password
         const isValidPassword = authUser.password === hashedPassword(password);
         if(!isValidPassword) {
-            return res.status(400).json({ error: 'Incorrect Password!'});
+            res.status(400).json({ error: 'Incorrect Password!'});
         }
 
         const isValidRole = authUser.role === role;
         if(!isValidRole){
-            return res.status(400).json({ error: 'Invalid Role!'});
+            res.status(400).json({ error: 'Invalid Role!'});
         }
         
         // Generate and update auth_token
@@ -50,11 +51,21 @@ const loginUser = async (req: Request, res: Response): Promise<Response> => {
         await authUser.save();
 
         // Success
-        return res.status(201).json({ message: 'You are logged in as an user!', data: { studentId: authUser.studentId, auth_token: authUser.auth_token } });
+        res.status(201).json({ message: 'You are logged in as an user!', data: { studentId: authUser.studentId, auth_token: authUser.auth_token } });
         
     } catch (err) {
-        return res.status(500).json({ message: 'Internal Server Error!' });
+        res.status(500).json({ message: 'Internal Server Error!' });
     }
 }
 
-export default loginUser;
+// Login Admin Page
+const loginUserPage = async (req: Request, res: Response): Promise<void> => {
+    try {
+        res.render('user/login');
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Internal Server Error!' });
+    }
+}
+
+export { loginUser, loginUserPage };
