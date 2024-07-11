@@ -4,31 +4,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Registration</title>
-    <link rel="stylesheet" href="../../public/css/style.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="js/adminRegister.js"></script>
 </head>
 <body>
-    <h1>Admin Registration</h1>
-    <form action="/auth/admin/register" method="POST" enctype="application/x-www-form-urlencoded">
-        <label for="name">Name</label>
-        <input type="text" id="name" name="name" required>
-        
-        <label for="email">Email</label>
-        <input type="email" id="email" name="email" required>
-        
-        <label for="password">Password</label>
-        <input type="password" id="password" name="password" required>
-        
-        <label for="contact">Contact</label>
-        <input type="text" id="contact" name="contact" required>
+    <section>
+        <h1>Admin Registration</h1>
+        <form id="registrationForm" action="/auth/admin/register" method="POST">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
 
-        <label for="role">Role</label>
-        <select id="role" name="role">
-            <option value="admin">Admin</option>
-        </select>
-        
-        <button type="submit">Register</button>
-    </form>
-    <p>Already have an account? <a href="/auth/admin/login">Login</a></p>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required minlength="8">
+
+            <label for="contact">Contact:</label>
+            <input type="text" id="contact" name="contact" required>
+
+            <label for="role">Role</label>
+            <select id="role" name="role">
+                <option value="admin">Admin</option>
+            </select>
+
+            <button type="submit">Register</button>
+        </form>
+        <p>Already have an account? <a href="/auth/admin/login">Login</a></p>
+    </section>
 </body>
 </html>
-
